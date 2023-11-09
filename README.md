@@ -1,8 +1,35 @@
 # Project: Building a Retail Data Pipeline
 
+## Project Overview
+
+Walmart, the largest retail store in the United States, is expanding its e-commerce business. E-commerce sales accounted for $80 billion, representing 13% of Walmart's total sales by the end of 2022. Public holidays like the Super Bowl, Labor Day, Thanksgiving, and Christmas significantly impact their sales.
+
+In this project, you'll create a data pipeline to analyze demand and supply around holidays. Your task is to merge and analyze data from two sources: the `grocery_sales` table in a PostgreSQL database and the `extra_data.parquet` file that contains complementary data.
+
+## Data Sources
+
+You'll be working with two data sources, each with the following columns:
+
+**grocery_sales table (PostgreSQL):**
+- "index" - Unique row identifier
+- "Store_ID" - Store number
+- "Date" - Sales week
+- "Weekly_Sales" - Sales for the store
+- "IsHoliday" - 1 if the week contains a public holiday, 0 otherwise
+- "Temperature" - Temperature on the sale day
+- "Fuel_Price" - Regional fuel cost
+- "CPI" - Consumer Price Index
+- "Unemployment" - Unemployment rate
+- "MarkDown1," "MarkDown2," "MarkDown3," "MarkDown4" - Number of promotional markdowns
+- "Dept" - Department number in each store
+- "Size" - Store size
+- "Type" - Store type (depends on size)
+
+
 ## Project Instructions
 
-The project involves creating a data pipeline for analyzing demand and supply around the holidays. You will work with two data sources: `grocery_sales` from a PostgreSQL database and `extra_data.parquet` for complementary data. The following instructions will guide you through the project.
+This project involves creating a data pipeline and performing preliminary analysis of Walmart's sales data around holidays. Follow the instructions to complete the tasks:
+
 
 ### Functions to Implement
 
