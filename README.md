@@ -1,61 +1,74 @@
-# Project-Building-a-Retail-Data-Pipeline
+# Project: Building a Retail Data Pipeline
 
-# Project Instructions
-•	Theextract() function should combine grocery_sales table and extra_data.parquet file. It should return a DataFrame and be stored as the merged_df variable.
-•	Thetransform() should take the merged_df as input, fill missing values, add a column "Month", keep the rows where the sales are over $10,000, and drop the index. Ultimately, it should return a DataFrame and be stored as the clean_data variable.
-•	The avg_monthly_sales() should take clean_data as input and returns an aggregated DataFrame containing two columns - "Month" and "Avg_Sales" (rounded to 2 decimals). You should store it as the agg_sales variable.
-•	The load() function should take in the cleaned and aggregated DataFrames, and their paths and saves them as clean_data.csv and agg_data.csv respectively, without an index.
-•	Finally, the validation() function should check whether the two csv files from the load() exist in the current working directory.
+## Project Instructions
 
-# GUIDES: 
-## 1.	Extracting the data
-- Extract the data from PostgreSQL and parquet file.
-- Extracting the data from PostgreSQL database
-•	Write the query in the cell dedicated to SQL queries. 
-•	You have to extract all columns from the grocery_sales table using a SQL query.
-•	The SELECT statement is used to specify which columns to select, FROM statement is used to specify the table from which you are extracting data. 
-- Creating a function to extract data
-•	The extract() function should accept: the DataFrame you've extracted using SQL and a parquet file.
-•	You can use pd.read_parquet() to read a parquet file in as a pandas DataFrame.
-•	Before merging, check which column the two DataFrames have in common, then use merge() to join them using the column in common.
-•	Store the merged DataFrame as merged_df.
+The project involves creating a data pipeline for analyzing demand and supply around the holidays. You will work with two data sources: `grocery_sales` from a PostgreSQL database and `extra_data.parquet` for complementary data. The following instructions will guide you through the project.
 
-## 2.	Transforming the data
-- Imputation, filtering, and cleaning.
-- Creating the transform function
-•	The transform() function should accept one argument: the merged DataFrame you got from extract() function.
-- Imputing missing values
-•	You can use .fillna() function on either multiple columns at once or individual columns. Here is an example of applying it to multiple columns: df.fillna( { 'col1': df['col1'].mean(), 'col2': df['col2'].mode(), }, inplace = True 
-Filtering data
-•	To extract data from certain months only, you first have to convert Date column to datetime using pd.to_datetime() and specifying format "%Y-%m-%d".Then, you should create a column that extracts month from Date column. 
-•	Finally, you can filter the DataFrame using the new column and function .isin(). Remember to extract not only the holiday months, but also the months following and preceding those months. 
-•	To filter sales data, use .loc() function and Weekly_Sales columns. Here is an example: data = data.loc[data["sales"] > 23, :] 
-•	Drop the index column as it's not needed in the analysis. Don't forget to specify axis argument in drop() function.
-- Storing transformations
-•	Pass the right DataFrame to the transform() function and store the output as a variable called clean_data.
+### Functions to Implement
 
-## 3.	Preliminary analysis of the sales data
-- After cleaning the data, you will perform some simple analysis.
-- Creating the function
-•	The avg_monthly_sales() function should accept one argument: the cleaned DataFrame you got from transform() function.
-- Subsetting the data
-•	For the analysis, you should only keep the columns: Month and Weekly_Sales
-•	You can use the following syntax to select the necessary columns: df[["Col1", "Col2"]] 
+1. `extract()`
+   - Combine `grocery_sales` table and `extra_data.parquet` file.
+   - Return a DataFrame as `merged_df`.
 
-- Aggregate the sales data
-•	First, you have to group your data using the Month column
-•	Then, you can apply aggregate function to compute the average using the Weekly_Sales column and rename it to Avg_Sales
-•	Finally, you have to round() the Avg_Sales column to the two decimal places and store the results in the sales_per_month variable.
+2. `transform(merged_df)`
+   - Take the `merged_df` as input.
+   - Fill missing values, add a "Month" column, keep rows with sales over $10,000, and drop the index.
+   - Return a DataFrame as `clean_data`.
 
-## 4.	Loading and validating the data
-- Final step is to store your transformed data and validate that it was stored correctly.
-- Save the data as a csv file
-•	Function load() should accept two arguments: variable that stores your transformed DataFrame and file path.
-•	Use pandas .to_csv() method to write DataFrame to a csv file. Specify file path as "clean_data.csv" for the full DataFrame and "sales_per_month.csv" for the aggregated data.
-•	Make sure to include index = False to avoid storing the index column.
+3. `avg_monthly_sales(clean_data)`
+   - Accept `clean_data` as input.
+   - Aggregate data to compute the average sales per month.
+   - Return an aggregated DataFrame with "Month" and "Avg_Sales" (rounded to 2 decimals) as `agg_sales`.
 
-- Validation
-•	The validation() function should accept one argument: file path you have used to store your csv file
-•	You can use path.exists() function from the os package to check whether the file path exists. 
-•	Create an ìf statement that will raise Exception in case file doesn't exist. 
+4. `load(clean_data, agg_sales)`
+   - Take cleaned and aggregated DataFrames along with their paths.
+   - Save them as `clean_data.csv` and `agg_data.csv`, respectively, without an index.
 
+5. `validation(file_path)`
+   - Check whether the CSV files from the `load()` function exist in the current working directory.
+   - Raise an Exception if the file doesn't exist.
+
+## Guides
+
+### 1. Extracting the Data
+- Extract data from PostgreSQL and a parquet file.
+- Extracting data from the PostgreSQL database:
+   - Write a SQL query to extract all columns from the `grocery_sales` table.
+   - Use the `SELECT` statement to specify columns and the `FROM` statement to specify the table.
+- Creating a function to extract data:
+   - The `extract()` function should accept the DataFrame extracted using SQL and a parquet file.
+   - Use `pd.read_parquet()` to read the parquet file and merge the DataFrames based on a common column.
+
+### 2. Transforming the Data
+- Perform imputation, filtering, and cleaning.
+- Creating the `transform` function:
+   - The `transform()` function should accept the merged DataFrame from the `extract()` function.
+- Imputing missing values:
+   - Use `.fillna()` on multiple columns or individual columns to handle missing data.
+- Filtering data:
+   - Convert the Date column to a datetime format and extract the month.
+   - Filter the DataFrame based on specific months and sales values.
+   - Drop the index column.
+- Storing transformations:
+   - Pass the DataFrame to the `transform()` function and store the output as `clean_data`.
+
+### 3. Preliminary Analysis of the Sales Data
+- After cleaning the data, perform simple analysis.
+- Creating the `avg_monthly_sales()` function:
+   - Accept the cleaned DataFrame from the `transform()` function.
+- Subsetting the data:
+   - Keep only the "Month" and "Weekly_Sales" columns.
+- Aggregate the sales data:
+   - Group data by the "Month" column and compute the average sales.
+   - Round the "Avg_Sales" column to two decimal places and store the results.
+
+### 4. Loading and Validating the Data
+- The final step is to store transformed data and validate the storage.
+- Saving the data as a CSV file:
+   - The `load()` function should accept cleaned and aggregated DataFrames and their paths.
+   - Use `pandas.to_csv()` to write DataFrames to CSV files with specified names.
+   - Include `index = False` to avoid storing the index column.
+- Validation:
+   - The `validation()` function should accept a file path used to store CSV files.
+   - Use `path.exists()` from the `os` package to check if the file path exists.
+   - Raise an Exception if the file doesn't exist.
